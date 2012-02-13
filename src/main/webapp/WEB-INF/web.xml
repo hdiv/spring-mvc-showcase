@@ -6,7 +6,10 @@
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+		<param-value>
+			/WEB-INF/spring/root-context.xml
+			/WEB-INF/spring/hdiv-config.xml
+		</param-value>
 	</context-param>
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
@@ -30,9 +33,29 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
+	<!-- HDIV Init Listener -->
+	<listener>
+		<listener-class>org.hdiv.listener.InitListener</listener-class>
+	</listener>
+	<!-- HDIV Validator Filter -->
+	<filter>
+		<filter-name>ValidatorFilter</filter-name>
+		<filter-class>org.hdiv.filter.ValidatorFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ValidatorFilter</filter-name>
+		<servlet-name>appServlet</servlet-name>
+	</filter-mapping>
+
 	<!-- Disables Servlet Container welcome file handling. Needed for compatibility with Servlet 3.0 and Tomcat 7.0 -->
 	<welcome-file-list>
 		<welcome-file></welcome-file>
 	</welcome-file-list>	
 
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/hdiv-c.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 </web-app>

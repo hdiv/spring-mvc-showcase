@@ -35,6 +35,10 @@
 	<logger name="org.springframework.web">
 		<level value="debug" />
 	</logger>
+	
+	<logger name="org.hdiv.logs">
+		<level value="info" />
+	</logger>
 
 	<!-- Root Logger -->
 	<root>
