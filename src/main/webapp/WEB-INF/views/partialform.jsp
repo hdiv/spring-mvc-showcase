@@ -105,7 +105,7 @@
 				$("#partialform").submit(function() {
 					$.post($(this).attr("action"), $(this).serialize(), function(html) {
 						$("#partialFormsContent").replaceWith(html);
-						$('html, body').animate({ scrollTop: $("#message").offset().top }, 500);
+						$('html, body').animate({ scrollTop: $("#partialform #message").offset().top }, 500);
 					});
 					return false;  
 				});

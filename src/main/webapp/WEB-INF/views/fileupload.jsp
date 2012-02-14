@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <c:if test="${!ajaxRequest}">
 <html>
 <head>
@@ -14,7 +15,7 @@
 		<p>
 			See the <code>org.springframework.samples.mvc.fileupload</code> package for the @Controller code	
 		</p>
-		<form id="fileuploadForm" action="fileupload" method="POST" enctype="multipart/form-data" class="cleanform">
+		<form:form id="fileuploadForm" action="fileupload" method="POST" enctype="multipart/form-data" class="cleanform">
 			<div class="header">
 		  		<h2>Form</h2>
 		  		<c:if test="${not empty message}">
@@ -24,7 +25,7 @@
 			<label for="file">File</label>
 			<input id="file" type="file" name="file" />
 			<p><button type="submit">Upload</button></p>		
-		</form>
+		</form:form>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('<input type="hidden" name="ajaxUpload" value="true" />').insertAfter($("#file"));
