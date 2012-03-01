@@ -127,7 +127,7 @@
 							//Create new label and select with suggestion types
 							var newSelect = $("<select>").attr("id", "suggestType").attr("name", "suggestType");
 							$.each(data, function(key, val) {
-								newSelect.append("<option value='"+val+"'>"+val+"</option>");
+								newSelect.append("<option value='"+val+"'>"+key+"</option>");
 							});
 							//Add to DOM
 							select.after(newSelect);

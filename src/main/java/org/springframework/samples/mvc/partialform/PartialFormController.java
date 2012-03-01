@@ -1,7 +1,9 @@
 package org.springframework.samples.mvc.partialform;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -74,13 +76,27 @@ public class PartialFormController {
 	}
 
 	@RequestMapping(value = "/suggestTypes", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody
-	List<String> getSuggestTypes() {
+	public @ResponseBody Map<String, String> getSuggestTypes() {
+
+		Map<String, String> values = new HashMap<String, String>();
 
 		//Call to Hdiv to add the new parameter value to the state
 		IDataComposer dataComposer = HDIVUtil.getDataComposer();
-		for (String val : suggestTypes) {
-			dataComposer.compose("suggestType", val, true);
+		for (String val : this.suggestTypes) {
+			String confidentialValue = dataComposer.compose("suggestType", val, false);
+			values.put(val, confidentialValue);
+		}
+
+		return values;
+	}
+
+	@RequestMapping(value = "/suggestTypesSimple", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody List<String> getSuggestTypesSimple() {
+
+		//Call to Hdiv to add the new parameter value to the state
+		IDataComposer dataComposer = HDIVUtil.getDataComposer();
+		for (String val : this.suggestTypes) {
+			dataComposer.compose("suggestType", val, false);
 		}
 
 		return this.suggestTypes;
