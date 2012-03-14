@@ -1,5 +1,9 @@
-Spring MVC Showcase
--------------------
+Spring MVC and Ajax Showcase with HDIV
+--------------------------------------
+Spring MVC sample application that uses Ajax for navigation and form submission.
+HDIV is added to secure the application.
+One tab is added to the application, "Partial Forms", that contains partial form update example with Ajax.
+
 Demonstrates the capabilities of the Spring MVC web framework through small, simple examples.
 After reviewing this showcase, you should have a good understanding of what Spring MVC can do and get a feel for how easy it is to use.
 Includes project code along with a supporting slideshow and screen cast.

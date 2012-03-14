@@ -98,7 +98,11 @@
 			<p><button type="submit">Submit</button></p>
 		</form:form>
 		
-		<c:url var="suggestTypeUrl" value="/partialform/suggestTypes.json"/>
+		<!-- 'hdivFormStateId' is a request scoped attribute with the state id of last form.
+				It is automatically created by 'form:form' tag. -->
+		<c:url var="suggestTypeUrl" value="/partialform/suggestTypes.json">
+			<c:param name="_MODIFY_HDIV_STATE_" value="${hdivFormStateId}" />
+		</c:url>
 		
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -120,9 +124,6 @@
 						//If selection is suggestion, get types from server
 						var select = $(this);
 						var url = "${suggestTypeUrl}";
-						//Add Hdiv state id to update
-						var previousState = getFormHdivState(select);
-						url += "&_MODIFY_HDIV_STATE_="+previousState;
 						$.getJSON(url, function(data) {
 							//Create new label and select with suggestion types
 							var newSelect = $("<select>").attr("id", "suggestType").attr("name", "suggestType");
@@ -136,10 +137,6 @@
 					}
 					return false;  
 				});
-				function getFormHdivState(formElement){
-					var stateId = formElement.parents("form").find("input[name='_HDIV_STATE_']").val();
-					return stateId;
-				}
 			});
 		</script>
 	</div>
