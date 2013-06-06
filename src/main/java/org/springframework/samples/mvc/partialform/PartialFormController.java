@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.hdiv.dataComposer.DataComposerCipher;
+import org.hdiv.dataComposer.DataComposerHash;
 import org.hdiv.dataComposer.IDataComposer;
 import org.hdiv.util.HDIVUtil;
 import org.springframework.mvc.extensions.ajax.AjaxUtils;
@@ -59,7 +61,7 @@ public class PartialFormController {
 		if (result.hasErrors()) {
 			return null;
 		}
-		// Typically you would save to a db and clear the "form" attribute from the session 
+		// Typically you would save to a db and clear the "form" attribute from the session
 		// via SessionStatus.setCompleted(). For the demo we leave it in the session.
 		String message = "Form submitted successfully.  Bound " + formBean;
 		// Success response handling
@@ -76,30 +78,25 @@ public class PartialFormController {
 	}
 
 	@RequestMapping(value = "/suggestTypes", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody Map<String, String> getSuggestTypes() {
+	public @ResponseBody
+	Map<String, String> getSuggestTypes() {
 
 		Map<String, String> values = new HashMap<String, String>();
 
-		//Call to Hdiv to add the new parameter value to the state
+		// Call to Hdiv to add the new parameter value to the state
 		IDataComposer dataComposer = HDIVUtil.getDataComposer();
 		for (String val : this.suggestTypes) {
 			String confidentialValue = dataComposer.compose("suggestType", val, false);
 			values.put(val, confidentialValue);
 		}
-
-		return values;
-	}
-
-	@RequestMapping(value = "/suggestTypesSimple", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody List<String> getSuggestTypesSimple() {
-
-		//Call to Hdiv to add the new parameter value to the state
-		IDataComposer dataComposer = HDIVUtil.getDataComposer();
-		for (String val : this.suggestTypes) {
-			dataComposer.compose("suggestType", val, false);
+		/* Add new state to the response */
+		/* Only necessary for 'cipher' or 'hash' strategy */
+		if (dataComposer instanceof DataComposerHash || dataComposer instanceof DataComposerCipher) {
+			String requestId = dataComposer.endRequest();
+			values.put("hdiv_form_state", requestId);
 		}
 
-		return this.suggestTypes;
+		return values;
 	}
 
 }

@@ -131,7 +131,12 @@
 							//Create new label and select with suggestion types
 							var newSelect = $("<select>").attr("id", "suggestType").attr("name", "suggestType");
 							$.each(data, function(key, val) {
-								newSelect.append("<option value='"+val+"'>"+key+"</option>");
+								if(key === 'hdiv_form_state'){
+									// In case of 'cipher' or 'hash' strategy update for state with new value 
+									$("#partialform input[name='_HDIV_STATE_']").attr("value", val);
+								} else {
+									newSelect.append("<option value='"+val+"'>"+key+"</option>");
+								}
 							});
 							//Add to DOM
 							select.after(newSelect);
