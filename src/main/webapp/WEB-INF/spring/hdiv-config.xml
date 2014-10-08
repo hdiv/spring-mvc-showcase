@@ -8,6 +8,7 @@ http://www.hdiv.org/schema/hdiv http://www.hdiv.org/schema/hdiv/hdiv.xsd">
 		maxPagesPerSession="10" reuseExistingPageInAjaxRequest="true">
 		<hdiv:startPages>/</hdiv:startPages>
 		<hdiv:paramsWithoutValidation>
+			<hdiv:mapping url=".*" parameters="_csrf"/>
 			<hdiv:mapping url="/messageconverters/form" parameters="fruit,foo" />
 			<hdiv:mapping url="/fileupload" parameters="ajaxUpload" />
 		</hdiv:paramsWithoutValidation>

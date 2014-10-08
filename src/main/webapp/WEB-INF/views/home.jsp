@@ -4,7 +4,16 @@
 <head>
 	<title>spring-mvc-showcase</title>
 	<link href="<c:url value="/resources/form.css" />" rel="stylesheet"  type="text/css" />		
-	<link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.all.css" />" rel="stylesheet" type="text/css"/>
+	<link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.core.css" />" rel="stylesheet" type="text/css"/>
+	<link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.theme.css" />" rel="stylesheet" type="text/css"/>
+	<link href="<c:url value="/resources/jqueryui/1.8/themes/base/jquery.ui.tabs.css" />" rel="stylesheet" type="text/css"/>
+	
+	<!--
+		Used for including CSRF token in JSON requests
+		Also see bottom of this file for adding CSRF token to JQuery AJAX requests
+	-->
+	<meta name="_csrf" content="${_csrf.token}"/>
+	<meta name="_csrf_header" content="${_csrf.headerName}"/>
 </head>
 <body>
 <h1><a href="<c:url value="/" />">spring-mvc-showcase</a></h1>
@@ -12,11 +21,11 @@
 <div id="tabs">
 	<ul>
 		<li><a href="#simple">Simple</a></li>
-		<li><a href="#mapping">Mapping Requests</a></li>
-		<li><a href="#data">Obtaining Request Data</a></li>
-		<li><a href="#responses">Writing Responses</a></li>
+		<li><a href="#mapping">Request Mapping</a></li>
+		<li><a href="#data">Request Data</a></li>
+		<li><a href="#responses">Response Writing</a></li>
 		<li><a href="#messageconverters">Message Converters</a></li>
-		<li><a href="#views">Rendering Views</a></li>
+		<li><a href="#views">View Rendering</a></li>
 		<li><a href="#convert">Type Conversion</a></li>
 		<li><a href="#validation">Validation</a></li>
 		<li><a href="<c:url value="/form" />" title="forms">Forms</a></li>
@@ -24,6 +33,7 @@
 		<li><a href="<c:url value="/fileupload" />" title="fileupload">File Upload</a></li>
 		<li><a href="#exceptions">Exception Handling</a></li>
 		<li><a href="#redirect">Redirecting</a></li>
+        <li><a href="#async">Async Requests</a></li>
     </ul>
     <div id="simple">
 		<h2>Simple</h2>
@@ -40,7 +50,7 @@
 		</ul>
 	</div>
 	<div id="mapping">
-		<h2>Mapping Requests</h2>
+		<h2>Request Mapping</h2>
 		<p>
 			See the <code>org.springframework.samples.mvc.mapping</code> package for the @Controller code
 		</p>
@@ -72,12 +82,21 @@
 				</form>
 			</li>
 			<li>
-				<a id="byProduces" class="writeJsonLink" href="<c:url value="/mapping/produces" />">By produces</a>
+				<a id="byProducesAcceptJson" class="writeJsonLink" href="<c:url value="/mapping/produces" />">By produces via Accept=application/json</a>
 			</li>
+            <li>
+                <a id="byProducesAcceptXml" class="writeXmlLink" href="<c:url value="/mapping/produces" />">By produces via Accept=appilcation/xml</a>
+            </li>
+            <li>
+              <a id="byProducesJsonExt" class="writeJsonLink" href="<c:url value="/mapping/produces.json" />">By produces via ".json"</a>
+            </li>
+            <li>
+                <a id="byProducesXmlExt" class="writeXmlLink" href="<c:url value="/mapping/produces.xml" />">By produces via ".xml"</a>
+            </li>
 		</ul>
 	</div>
 	<div id="data">
-		<h2>Obtaining Request Data</h2>
+		<h2>Request Data</h2>
 		<p>
 			See the <code>org.springframework.samples.mvc.data</code> package for the @Controller code
 		</p>
@@ -90,6 +109,12 @@
 			</li>
 			<li>
 				<a id="var" class="textLink" href="<c:url value="/data/path/foo" />">Path variable</a>
+			</li>
+			<li>
+				<a id="matrixVar" class="textLink" href="<c:url value="/data/matrixvars;foo=bar/simple" />">Matrix variable</a>
+			</li>
+			<li>
+				<a id="matrixVarMultiple" class="textLink" href="<c:url value="/data/matrixvars;foo=bar1/multiple;foo=bar2" />">Matrix variables (multiple)</a>
 			</li>
 			<li>
 				<a id="header" class="textLink" href="<c:url value="/data/header" />">Header</a>
@@ -145,7 +170,7 @@
 		</div>
 	</div>
 	<div id="responses">
-		<h2>Writing Responses</h2>
+		<h2>Response Writing</h2>
 		<p>
 			See the <code>org.springframework.samples.mvc.response</code> package for the @Controller code
 		</p>		
@@ -203,8 +228,11 @@
 					</form>
 				</li>
 				<li>
-					<a id="writeXml" class="writeXmlLink" href="<c:url value="/messageconverters/xml" />">Write XML</a>
+					<a id="writeXmlAccept" class="writeXmlLink" href="<c:url value="/messageconverters/xml" />">Write XML via Accept=application/xml</a>
 				</li>
+                <li>
+                    <a id="writeXmlExt" class="writeXmlLink" href="<c:url value="/messageconverters/xml.xml" />">Write XML via ".xml"</a>
+                </li>
 			</ul>
 			<h3>MappingJacksonHttpMessageConverter</h3>
 			<ul>
@@ -219,8 +247,11 @@
 					</form>
 				</li>
 				<li>
-					<a id="writeJson" class="writeJsonLink" href="<c:url value="/messageconverters/json" />">Write JSON</a>
+					<a id="writeJsonAccept" class="writeJsonLink" href="<c:url value="/messageconverters/json" />">Write JSON via Accept=application/json</a>
 				</li>
+                <li>
+                    <a id="writeJsonExt" class="writeJsonLink" href="<c:url value="/messageconverters/json.json" />">Write JSON via ".json"</a>
+                </li>
 			</ul>
 			<h3>AtomFeedHttpMessageConverter</h3>
 			<ul>
@@ -247,7 +278,7 @@
 		</div>
 	</div>
 	<div id="views">
-		<h2>Rendering Views</h2>
+		<h2>View Rendering</h2>
 		<p>
 			See the <code>org.springframework.samples.mvc.views</code> package for the @Controller code
 		</p>
@@ -348,7 +379,10 @@
 		</p>
 		<ul>
 			<li>
-				<a id="exception" class="textLink" href="<c:url value="/exception" />">@Controller Exception handling</a>
+				<a id="exception" class="textLink" href="<c:url value="/exception" />">@ExceptionHandler in Controller</a>
+			</li>
+			<li>
+				<a id="globalException" class="textLink" href="<c:url value="/global-exception" />">Global @ExceptionHandler</a>
 			</li>
 		</ul>
 	</div>
@@ -364,6 +398,54 @@
 			<li>
 				<a href="<c:url value="/redirect/uriComponentsBuilder" />">UriComponentsBuilder</a>
 			</li>
+		</ul>
+	</div>
+	<div id="async">
+		<h2>Async Requests</h2>
+		<p>
+			<em>Note: Links may take 2-3 seconds to complete.</em>
+		</p>
+		<p>
+		  See the <code>org.springframework.samples.mvc.async</code> package for the @Controller code.
+		</p>
+		<ul>
+		<li>
+			<a id="callableResponseBodyLink" class="textLink"
+				href="<c:url value="/async/callable/response-body" />">GET /async/callable/response-body</a>
+		</li>
+		<li>
+			<a id="callableViewLink" class="textLink"
+				href="<c:url value="/async/callable/view" />">GET /async/callable/view</a>
+		</li>
+		<li>
+			<a id="callableExceptionLink" class="textLink"
+				href="<c:url value="/async/callable/exception" />">GET /async/callable/exception</a>
+		</li>
+		<li>
+			<a id="callableUnhandledExceptionLink" class="textLink"
+				href="<c:url value="/async/callable/exception?handled=false" />">GET /async/callable/exception?handled=false</a>
+				(500 Error expected)
+		</li>
+		<li>
+			<a id="callableCustomTimeoutLink" class="textLink"
+				href="<c:url value="/async/callable/custom-timeout-handling" />">GET /async/callable/custom-timeout-handling</a>
+		</li>
+		<li>
+			<a id="deferredResultSuccessLink" class="textLink"
+				href="<c:url value="/async/deferred-result/response-body" />">GET /async/deferred-result/response-body</a>
+		</li>
+		<li>
+			<a id="deferredResultModelAndViewLink" class="textLink"
+				href="<c:url value="/async/deferred-result/model-and-view" />">GET /async/deferred-result/model-and-view</a>
+		</li>
+		<li>
+			<a id="deferredResultErrorLink" class="textLink"
+				href="<c:url value="/async/deferred-result/exception" />">GET /async/deferred-result/exception</a>
+		</li>
+		<li>
+			<a id="deferredResultTimeoutValueLink" class="textLink"
+				href="<c:url value="/async/deferred-result/timeout-value" />">GET /async/deferred-result/timeout-value</a>
+		</li>
 		</ul>
 	</div>
 </div>
@@ -462,7 +544,9 @@ $(document).ready(function() {
 		var link = $(this);
 		$.ajax({ url: link.attr("href"),
 			beforeSend: function(req) { 
-				req.setRequestHeader("Accept", "application/application+xml");
+				if (!this.url.match(/\.xml$/)) {
+					req.setRequestHeader("Accept", "application/xml");
+				}
 			},
 			success: function(xml) {
 				MvcUtil.showSuccessResponse(MvcUtil.xmlencode(xml), link);
@@ -486,7 +570,18 @@ $(document).ready(function() {
 
 	$("a.writeJsonLink").click(function() {
 		var link = $(this);
-		$.ajax({ url: this.href, dataType: "json", success: function(json) { MvcUtil.showSuccessResponse(JSON.stringify(json), link); }, error: function(xhr) { MvcUtil.showErrorResponse(xhr.responseText, link); }});					
+		$.ajax({ url: this.href,
+			beforeSend: function(req) {
+				if (!this.url.match(/\.json$/)) {
+					req.setRequestHeader("Accept", "application/json");
+				}
+			},
+			success: function(json) {
+				MvcUtil.showSuccessResponse(JSON.stringify(json), link);
+			},
+			error: function(xhr) {
+				MvcUtil.showErrorResponse(xhr.responseText, link);
+			}});
 		return false;
 	});
 
@@ -540,6 +635,14 @@ $(document).ready(function() {
 		var link = $(this);
 		$.ajax({ url: this.href, dataType: "text", beforeSend: function(req) { req.setRequestHeader("FooHeader", "foo"); }, success: function(form) { MvcUtil.showSuccessResponse(form, link); }, error: function(xhr) { MvcUtil.showErrorResponse(xhr.responseText, link); }});
 		return false;
+	});
+
+	// Include CSRF token as header in JQuery AJAX requests
+	// See http://docs.spring.io/spring-security/site/docs/3.2.x/reference/htmlsingle/#csrf-include-csrf-token-ajax
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function(e, xhr, options) {
+		xhr.setRequestHeader(header, token);
 	});
 
 });

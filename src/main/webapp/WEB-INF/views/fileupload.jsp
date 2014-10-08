@@ -15,7 +15,11 @@
 		<p>
 			See the <code>org.springframework.samples.mvc.fileupload</code> package for the @Controller code	
 		</p>
-		<form:form id="fileuploadForm" action="fileupload" method="POST" enctype="multipart/form-data" class="cleanform">
+		<!--
+		    File Uploads must include CSRF in the URL.
+		    See http://docs.spring.io/spring-security/site/docs/3.2.x/reference/htmlsingle/#csrf-multipart
+		-->
+		<form:form id="fileuploadForm" action="fileupload?${_csrf.parameterName}=${_csrf.token}" method="POST" enctype="multipart/form-data" class="cleanform">
 			<div class="header">
 		  		<h2>Form</h2>
 		  		<c:if test="${not empty message}">
