@@ -13,7 +13,7 @@
 		<org.springframework.security-version>3.2.0.RELEASE</org.springframework.security-version>
 		<org.aspectj-version>1.8.1</org.aspectj-version>
 		<org.slf4j-version>1.6.1</org.slf4j-version>
-		<org.hdiv-version>2.1.7</org.hdiv-version>
+		<org.hdiv-version>2.1.8</org.hdiv-version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
