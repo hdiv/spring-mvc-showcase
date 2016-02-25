@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.hdiv.dataComposer.DataComposerCipher;
-import org.hdiv.dataComposer.DataComposerHash;
 import org.hdiv.dataComposer.IDataComposer;
 import org.hdiv.util.HDIVUtil;
 import org.springframework.mvc.extensions.ajax.AjaxUtils;
@@ -79,21 +78,15 @@ public class PartialFormController {
 
 	@RequestMapping(value = "/suggestTypes", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody
-	Map<String, String> getSuggestTypes() {
+	Map<String, String> getSuggestTypes(HttpServletRequest request) {
 
 		Map<String, String> values = new HashMap<String, String>();
 
 		// Call to Hdiv to add the new parameter value to the state
-		IDataComposer dataComposer = HDIVUtil.getDataComposer();
+		IDataComposer dataComposer = HDIVUtil.getDataComposer(request);
 		for (String val : this.suggestTypes) {
 			String confidentialValue = dataComposer.compose("suggestType", val, false);
 			values.put(val, confidentialValue);
-		}
-		/* Add new state to the response */
-		/* Only necessary for 'cipher' or 'hash' strategy */
-		if (dataComposer instanceof DataComposerHash || dataComposer instanceof DataComposerCipher) {
-			String requestId = dataComposer.endRequest();
-			values.put("hdiv_form_state", requestId);
 		}
 
 		return values;
