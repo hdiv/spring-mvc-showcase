@@ -102,9 +102,9 @@
 		<c:url var="suggestTypeUrl" value="/partialform/suggestTypes.json">
 			<c:param name="_MODIFY_HDIV_STATE_" value="${hdivFormStateId}" />
 			
-			<!-- If 'randomName' is activated, use 'modifyHDIVStateParameter' attribute value as param name instead of '_MODIFY_HDIV_STATE_' literal
+			<%-- If 'randomName' is activated, use 'modifyHDIVStateParameter' attribute value as param name instead of '_MODIFY_HDIV_STATE_' literal
 			<c:param name="${modifyHDIVStateParameter}" value="${hdivFormStateId}" />
-			-->
+			--%>
 		</c:url>
 		
 		<script type="text/javascript">
